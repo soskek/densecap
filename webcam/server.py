@@ -30,13 +30,14 @@ class DenseCap(Resource):
     # do it manually. There is a prefix telling us that this is an image and the
     # type of the image, then a comma, then the raw base64 data for the image.
     # We just grab the part after the comma and decode it.
-    idx = request.data.find(',') + 1
-    img_data = request.data[idx:]
+    if False:
+      idx = request.data.find(',') + 1
+      img_data = request.data[idx:]
     
-    im = Image.open(BytesIO(base64.b64decode(img_data)))
-    im.save(img_name)
-
-    # request.files['image'].save(img_name)
+      im = Image.open(BytesIO(base64.b64decode(img_data)))
+      im.save(img_name)
+    else:
+      request.files['image'].save(img_name)
     json_name = os.path.join(output_dir, '%d.json' % img_id)
     while not os.path.isfile(json_name):
       time.sleep(0.05)
