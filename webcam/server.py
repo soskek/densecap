@@ -49,14 +49,21 @@ api.add_resource(DenseCap, '/')
 
 
 if __name__ == '__main__':
+  parser = argparse.ArgumentParser()
+  parser.add_argument('--ssl', action='store_true')
+  args = parser.parse_args()
+
   from tornado.wsgi import WSGIContainer
   from tornado.httpserver import HTTPServer
   from tornado.ioloop import IOLoop
 
-  http_server = HTTPServer(WSGIContainer(app), ssl_options={
-    'certfile': 'webcam/ssl/server.crt',
-    'keyfile': 'webcam/ssl/server.key'
-  })
+  kwargs = {}
+  if args.ssl:
+    kwargs['ssl_options'] = {
+      'certfile': 'webcam/ssl/server.crt',
+      'keyfile': 'webcam/ssl/server.key',
+    }
+  http_server = HTTPServer(WSGIContainer(app), **kwargs)
 
   http_server.listen(5000)
 
