@@ -28,17 +28,14 @@ RUN luarocks install cutorch
 RUN luarocks install cunn
 RUN luarocks install cudnn
 
-RUN luarocks install cudnn
-
 # Install densecap
-RUN git clone https://github.com/unnonouno/densecap.git ~/densecap
-
 RUN luarocks install luasocket
+RUN apt-get install -y --no-install-recommends python-pip python-dev wget
 
+RUN git clone https://github.com/unnonouno/densecap.git ~/densecap
 WORKDIR /root/densecap
-RUN apt-get install -y --no-install-recommends python-virtualenv python-pip python-dev wget
-RUN sh -ex scripts/download_pretrained_model.sh
 
-RUN cd webcam && pip install -r requirements.txt
+RUN sh -ex scripts/download_pretrained_model.sh
+RUN pip install -r webcam/requirements.txt
 
 CMD th webcam/daemon.lua & python webcam/server.py
