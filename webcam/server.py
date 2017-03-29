@@ -37,7 +37,8 @@ class DenseCap(Resource):
       im = Image.open(BytesIO(base64.b64decode(img_data)))
       im.save(img_name)
     else:
-      request.files['image'].save(img_name)
+      im = Image.open(request.files['image'].stream)
+      im.save(img_name, 'JPEG')
     json_name = os.path.join(output_dir, '%d.json' % img_id)
     while not os.path.isfile(json_name):
       time.sleep(0.05)
