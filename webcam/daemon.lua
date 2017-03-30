@@ -90,6 +90,7 @@ while true do
 
       local output_struct = {
         boxes = boxes_xywh:float():totable(),
+        scores = scores:float():view(-1):totable(),
         captions = captions,
         height = ori_H,
         width = ori_W,
